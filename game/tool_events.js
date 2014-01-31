@@ -11,13 +11,16 @@ exports.show_data = function(username, socket) {
 		var tasks = {};
 		var disable_me = [];
 		for(var i in data) {
-			tasks[data[i].task] = parseInt(data[i].time)-server.server_time();
+			tasks[data[i].task] = parseInt(data[i].time)-parseInt(server.server_time());
 			disable_me.push(data[i].task);
 			
 			
 		
 			
 		}
+		for(var i in tasks) {
+		console.log(i + tasks[i]);
+	}
 		socket.of('/hack').emit('show-task', { player_task: tasks, disable: disable_me});
 	})
 	

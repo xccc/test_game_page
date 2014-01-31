@@ -5,7 +5,7 @@ var db = mysql.createConnection({
 	host: 'localhost',
 	user: 'mysql',
 	password: '',
-	database: 'test'
+	database: 'pela'
 	})
 db.connect();
 

@@ -70,7 +70,7 @@ test.on('server_info', function(data) {
 	
 	$('#bruter').attr("title", "Scan some ips first, fuckface");
 	$('#bruter').attr("disabled", true);
-} else {
+} else { // Will you marry me dima?
 	var ip_holder = [];
 	for(var i in data.ip_addr) {
 		ip_holder.push(data.ip_addr[i].ip + '<br />');

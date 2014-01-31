@@ -1,0 +1,17 @@
+extends layout
+append content
+  script(src='/missions.js');
+  
+  p Missions
+  
+    for x in missions_open
+      p#wet(onclick="runTh()") #{x.level}
+      
+      p  #{x.desc}
+    for x in missions_closed
+      p #{x.level} || KEPPIV AHV || #{x.desc}
+    p#mission(style='position: absolute; left: 30%;top: 10%;')
+    
+     
+     
+   

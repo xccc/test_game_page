@@ -5,14 +5,43 @@ var db = mysql.createConnection({
 	host: 'localhost',
 	user: 'mysql',
 	password: '',
-	database: 'test'
+	database: 'pela' //test
 	})
 db.connect();
+exports.update = function(query) {
+	db.query(query);
+	
+}
 
 exports.create = function Game(player) {
 	{
 		this.player;
 }
+Game.prototype.get_connection = function(callback) {
+	db.query("SELECT * FROM ip_db WHERE player_name='" + player + "' AND connected='connection'", function(e, data) {
+		callback(data);
+	})
+}
+ 
+Game.prototype.get_node = function(ip_addr, callback) {
+	db.query("SELECT * FROM npc_db WHERE ip_addr='" + ip_addr + "'", function(e, data) {
+		callback(data);
+	})
+}
+Game.prototype.IP_db = function(callback) {
+	
+	db.query("SELECT * FROM ip_db WHERE player_name='" + player + "' AND access='1'", function(e, data) {
+		callback(data);
+	})
+}
+	
+Game.prototype.node_check = function(ip, callback) {
+		db.query("SELECT * FROM ip_db WHERE player_name='" + player + "' AND access='1' AND ip_addr='" + ip + "'", function(e, data) {
+		callback(data);
+	})
+	
+}
+
 Game.prototype.get_tools = function(tool_name, callback) {
 	var sql = db.query("SELECT * FROM Tools WHERE tool_name = ?", tool_name);
 	sql.on('result', function(result) {

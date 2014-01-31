@@ -1,0 +1,18 @@
+extends layout
+append content
+  script(src='/node-connection.js')
+  p IP Database
+  if info
+    p Click
+      a(href='/IP/JOIN' ) here
+      you like sucking dicks.
+  if list
+   span#ip_list
+    for x in list
+     p
+      a(href="#" onclick="con('" + x.ip_addr + "');") #{x.ip_addr} 
+      
+      |  <span style='color: red;'> #{x.desc} </span> <span class='#{x.game_value}'></span>
+       
+      
+  p#host(style='position: absolute; top: 10%; left:30%;')
