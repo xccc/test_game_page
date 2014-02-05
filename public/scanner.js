@@ -1,63 +1,61 @@
-function init() {
-	
+
 var dTime;
 var test = io.connect('/hack');
+function init() {
+	
 
+var errorMsg = function(msg) {
+		$('#info').html(msg);
+	};
+		
 function run_tool(x, pos) {
-setInterval(function() {
+	setInterval(function() {
 
     if (x > 0) {
        
         $(pos).html(x);
-    } else if(x == 0) {
+    } else if(x <= 0) {
 		$(pos).html('SHABANG!');
 	}
     x--;
 }, 1000);
 }
 
-
-
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
 function event_sender(event) {
 	event.emit(event_name, event_holder);
 }
 test.on('show-task', function(data) {
 	var time_holder;
+	var progressStatus = function(myValue) {
+			$('#progress').append(myValue);
+		};
 	
 	for(var i in data.disable) {
 		
-		if(data.disable[i].match(/^sc/) != -1) {
-			$('#scanner').attr("disabled","disabled");
-		
-		} if(data.disable[i].match(/^br/) != -1) { $('#bruter').attr("disabled","disabled"); }
-		//$(data.disable).attr("disabled", "disabled");
-	}
+		var antivirus = (data.disable[i].match(/^anti/)) ? progressStatus('Running task: ' + data.disable[i]) : '';
+		var scanner = (data.disable[i].match(/^sc/)) ? progressStatus('<br />' +  data.disable[i]) : '';
+		var bruter =  (data.disable[i].match(/^start/)) ? progressStatus('<br />' + data.disable[i]) : '';
+	}	
 	for(var i in data.player_task) {
 		
-		$('#running-tasks').prepend(i + data.player_task[i]);
-		run_tool(data.player_task[i], "#"+i);
+	
+		run_tool(Math.max(0, data.player_task[i]), "#"+i);
+
 		
 	}
 })
+
+
 test.emit('show_data', {username: $('#user').val()});
 test.on('tool_info', function(data) {
-	$('#info').prepend(data.action);
+	if(!data.time && !data.action && !data.tool) {
+		$('#info').html(data.message);
+	} else {
+	$('#info').html(data.action);
 	$('#'+data.tool).attr("disabled", "disabled");
 	
 	run_tool(data.time,'#'+data.action); // run counter oO
+}
 
 })
 
@@ -75,7 +73,7 @@ test.on('server_info', function(data) {
 	for(var i in data.ip_addr) {
 		ip_holder.push(data.ip_addr[i].ip + '<br />');
 	}
-	console.log(ip_holder);
+
 	$('#ip').html(ip_holder);
 	
 }
@@ -86,20 +84,16 @@ test.on('server_info', function(data) {
 function bruter() {
 	data = {}
 	data.message = "start_bruting";
-	//$.ajax({type: "POST",url: "/bruter",dataType:'text',data:(data), success:function(result){
+
 	
-//	$('#info').html(result);
-	dTime = $('#info').text();
 	var usern = $('#user').val();
-	var fixed_data = {};
-	fixed_data['username'] = usern;
-	fixed_data['tool_name'] = data.message;
-	test.emit('start_tool',{username: usern, tool_name: data.message});
-	//event_sender(test, 'start_tool', fixed_data);
-
 	
-
-//}});
+	test.emit('start_tool',{username: usern, tool_name: data.message});
+	test.on('scanPerm', function(data) {
+		
+		var access = (data.ace == 'false') ? errorMsg('You are already brute forcing!') : release(30);
+		
+	})
 
 }
 
@@ -112,22 +106,24 @@ function bruter() {
 function scanner() {
 	data = {}
 	data.message = "scanning";
+	var usern = $('#user').val();
+	test.emit('start_tool',{username: usern, tool_name: data.message});
+	test.on('scanPerm', function(data) {
+		
+		var access = (data.ace == 'false') ? errorMsg('You are already scanning!') : release(30);
+		
+	})
 	
-	
-	// $('#info').html(result);
-	dTime = parseInt($('#info').text());
-	test.emit('start_tool',{username: $('#user').val(), tool_name: data.message});
-	
-	
-	release();
-
-
-
-
 }
+
+
+
 	
 $('#scanner').click(function() {
+		
+	
 	scanner();
+
 })
 
 $('#bruter').click(function() {
@@ -136,10 +132,12 @@ $('#bruter').click(function() {
 
 
 
+}
 
 
 
-function release() {
+
+function release(runTime) {
 	
                 var $pG = $('#progressbar').progressbar();
                 var pGress = setInterval(function() {
@@ -151,10 +149,14 @@ function release() {
                         $pG.progressbar({
                             value : pCnt
                         });
+                       if(pCnt == 99) {
+						  
+						 
+					   }
                        
                     }
-                }, dTime*10);
-               console.log(pVal);
+                }, runTime);
+               
             }
 
 
@@ -164,6 +166,6 @@ function release() {
 
 
 
-}
+
 
 $(document).ready(init);

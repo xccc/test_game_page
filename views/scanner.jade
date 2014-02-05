@@ -1,0 +1,27 @@
+extends layout
+append content
+  link(rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css")
+  script(src='//code.jquery.com/jquery-1.8.3.min.js')
+  script(src='//code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js')
+  script(src="//code.jquery.com/ui/1.10.3/jquery-ui.js")
+  script(src='/socket.io/socket.io.js')
+  | <style> .ui-btn { width:20% !important; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; } </style>
+  script(src='scanner_ui.js')
+  
+  
+  p Welcome to uberLeet netscanner
+    input#file_browser(type='button' value='Select ip list' )
+  input(type='button' name='scanner' value='Scan')
+  input#username(type='hidden' value=username)
+  p#file_listing
+  
+  
+  
+  p#activity(style='display: inline;')
+    p#timer(style='display: inline;')
+  p#main-loaded
+  p#main-action
+  
+  p#bruter(style='position: absolute; top: 5%; left: 40%')
+  p#success-brute(style='position: absolute; top: 10%; left: 30%')
+  p#failure-brute(style='position: absolute; top: 10%; left: 50%')

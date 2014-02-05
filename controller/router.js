@@ -2,6 +2,7 @@ var hack = require('./../game/hacking.js');
 var game = require('./../game/login.js');
 var guide = require('./../game/tutorial.js');
 var page = require('./../game/pages.js');
+var check_me = require('./game/user_action.js');
 exports.route = function(route, socket) {
 	route.get('/email', function(req, res) {
 		res.render('email.jade');
@@ -20,4 +21,16 @@ exports.route = function(route, socket) {
 	route.get('/missions', guide.start);
 	route.get('/IP', page.ip);
 	route.get('/IP/JOIN', page.ip);
+	
+	
+	route.get('/Scanner', function(req, res) {
+	
+			check_me.user_action(req.session.username);
+		
+		
+			res.render('scanner.jade', {username: req.session.username});
+			
+
+		
+	})
 }

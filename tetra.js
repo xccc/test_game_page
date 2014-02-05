@@ -4,7 +4,7 @@ var http = require('http').createServer(app);
 var socket = require('socket.io').listen(http);
 var router = require('./controller/router.js');
 var sEvents = require('./server/events.js')(socket);
-app.set('ipaddr', 'localhost');
+app.set('ipaddr', '192.168.1.34');
 app.set('port', '1337');
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');

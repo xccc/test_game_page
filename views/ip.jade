@@ -1,6 +1,11 @@
 extends layout
 append content
+
+  link(rel='stylesheet' href='//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css')
+  script(src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
   script(src='/node-connection.js')
+  script(src='/progressbar.js')
+  
   p IP Database
   if info
     p Click
@@ -10,9 +15,24 @@ append content
    span#ip_list
     for x in list
      p
-      a(href="#" onclick="con('" + x.ip_addr + "');") #{x.ip_addr} 
+      a(href="#" name='#{x.ip_addr}' onclick="con(this);") #{x.ip_addr} 
       
-      |  <span style='color: red;'> #{x.desc} </span> <span class='#{x.game_value}'></span>
+      |  <span style='color: red;'> #{x.desc} #{x.health} </span> <span class='#{x.game_value}'></span>
+  if c_list
+    | <select width='30%'>
+    for x in c_list
+     
+      |   <option value='#{x.ip}'>#{x.ip}</option>
+    | </select>
+      
+      
        
       
   p#host(style='position: absolute; top: 10%; left:30%;')
+  p(style='position: absolute; top: 60% !important; left: 40%;') 
+    input#uploadButton(type='hidden' value='UPLOAD' onclick='upload();')
+  p#show-files(style='position: absolute; top: 70% !important; left: 40%;')
+  p#progressbar
+  p#upload-info
+  input#username(type='hidden' value='#{user}')
+  #tasker

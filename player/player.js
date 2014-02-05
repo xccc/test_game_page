@@ -3,7 +3,7 @@ var db = mysql.createConnection({
 	host: 'localhost',
 	user: 'mysql',
 	password: '',
-	database: 'test'
+	database: 'test' // test 
 	})
 db.connect();
 exports.q = function(query, params, callback) {
@@ -15,6 +15,9 @@ exports.q = function(query, params, callback) {
 	
 	
 }
+
+	
+	
 	
 exports.query = function(query, callback) {
 	db.query(query, function(e, data) {
@@ -30,9 +33,76 @@ exports.d = function Player(player) {
 		this.player = player;
 		
 }
+
+
+Player.prototype.get_files = function(callback) {
+		
+		db.query("SELECT * FROM hdd WHERE player_name ='" + player + "'", function(e, data) {
+			callback(data);
+		})
+		
+	
+}
+
+
+
+
+
+Player.prototype.upload_file = function(filename, node_ip, callback) {
+	
+	var tykk = this.file_type(filename, function(data) {
+		
+	
+		
+
+	var sql = db.query("INSERT INTO npc_db(player_name,ip_addr,software,type, item_size, version)VALUES('" + player + "','" + node_ip + "','" + data.software + "','" + data.type + "','" + data.item_size + "','" + data.version + "')");
+	
+	sql.on('result', function(e, data) {
+		callback(data);
+	})
+})
+}
 Player.prototype.show_scanned = function(callback) {
 	db.query("SELECT COUNT(id) AS id FROM user_private WHERE user='" + player + "' AND access='1'", function(e, data) {
 		callback(data);
+	})
+}
+Player.prototype.net_speed = function(npc_ip,f_size, callback) {
+		
+		var base_speed;
+		
+		
+		db.query("SELECT net_speed FROM System WHERE user='" + player + "'", function(e, host) {
+		
+		db.query("SELECT net_speed FROM npc_db WHERE ip_addr='" + npc_ip + "'", function(e, npc) {
+			
+			
+				if(host[0].net_speed > npc[0].net_speed) {
+					base_speed = npc[0].net_speed;
+				}else if(host[0].net_speed < npc[0].net_speed) {
+					base_speed = host[0].net_speed;
+				}else {
+					base_speed = host[0].net_speed;
+			}
+			final_speed = Math.round((f_size/base_speed)*10)
+			
+							callback(final_speed);
+						})
+		})
+		
+	
+}
+Player.prototype.file_size = function(item_id, callback) {
+	var sql = db.query("SELECT item_size FROM inventory WHERE user='" + player + "' AND software='" + item_id + "'");
+	sql.on('result', function(result) {
+		callback(result);
+	})
+}
+
+Player.prototype.file_type = function(item, callback) {
+	var sql = db.query("SELECT type, software, item_size, version FROM inventory WHERE user='" + player + "' AND software='" + item + "'");
+	sql.on('result', function(result) {
+		callback(result);
 	})
 }
 
@@ -56,10 +126,15 @@ Player.prototype.show_installed = function(tool_name,callback) {
 	})
 }
 
-
+Player.prototype.get_tool = function(tool_name, callback) {
+	var sql = db.query("SELECT time FROM inventory WHERE user= ? AND installed='1' AND software LIKE ?",[player, tool_name]);
+	sql.on('result', function(result) {
+		callback(result);
+	})
+}
 Player.prototype.check_inventory = function(item, callback) 
 	{
-		db.query("SELECT software, installed from inventory WHERE user='" + player + "' AND software='" + item + "'", function(e, data) {
+		db.query("SELECT software, installed, time from inventory WHERE user='" + player + "' AND software='" + item + "'", function(e, data) {
 			callback(data);
 		})
 	}
@@ -138,9 +213,11 @@ Player.prototype.scanning_done = function() {
 	db.query("UPDATE user_private SET access='1' WHERE user='" + player + "' AND access='0'");
 }
 
-
-
+Player.prototype.antivirus_done = function() {
 		
+	//db.query("UPDATE npc_db SET 
+
+}	
 
 Player.prototype.addActivity = function(finish_time, action) {
 	db.query("INSERT INTO user_action(user,time,task)VALUES('" + player + "','" + finish_time + "','" + action + "') ");
@@ -179,7 +256,18 @@ Player.prototype.get_hardware = function(callback) {
 		callback(data);
 	})
 }
-
+Player.prototype.getScanned = function(callback ) {
+	db.query("SELECT COUNT(id) AS xcheck FROM user_private WHERE user='" + player + "' AND access='1'", function(e, data) {
+		
+					callback(data);
+				})
+}
+Player.prototype.cracked_machines = function(callback) {
+	db.query("SELECT COUNT(id) AS xcheck FROM hacked_boxes WHERE user='" + player + "' AND hacked='1'", function(e, data) {
+		callback(data);
+	})
+}
+		
 
 
 

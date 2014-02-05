@@ -94,7 +94,7 @@ CREATE TABLE `Skills` (
 
 LOCK TABLES `Skills` WRITE;
 /*!40000 ALTER TABLE `Skills` DISABLE KEYS */;
-INSERT INTO `Skills` VALUES (1,'dima','6','0','1','131070'),(2,'juku','3','0',NULL,NULL);
+INSERT INTO `Skills` VALUES (1,'dima','6','0','1','133620'),(2,'juku','3','0',NULL,NULL);
 /*!40000 ALTER TABLE `Skills` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,6 +112,7 @@ CREATE TABLE `System` (
   `hdd` varchar(45) NOT NULL,
   `current_memory` varchar(45) NOT NULL,
   `installed` varchar(45) DEFAULT NULL,
+  `net_speed` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -122,7 +123,7 @@ CREATE TABLE `System` (
 
 LOCK TABLES `System` WRITE;
 /*!40000 ALTER TABLE `System` DISABLE KEYS */;
-INSERT INTO `System` VALUES (1,'dima','333','basics 0.1','64',NULL);
+INSERT INTO `System` VALUES (1,'dima','333','basics 0.1','64',NULL,'64');
 /*!40000 ALTER TABLE `System` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +150,7 @@ CREATE TABLE `Tools` (
 
 LOCK TABLES `Tools` WRITE;
 /*!40000 ALTER TABLE `Tools` DISABLE KEYS */;
-INSERT INTO `Tools` VALUES (1,'brute_forcer 0.1','6','10','1'),(2,'brute_forcer 0.2','25','500','2'),(3,'ip_scanner 0.1','100','25','1'),(4,'ip_scanner 0.2','100','1200','2'),(5,NULL,NULL,NULL,'');
+INSERT INTO `Tools` VALUES (1,'bruteForcer','6','10','1'),(4,'ipScanner','100','25','2'),(5,NULL,NULL,NULL,'');
 /*!40000 ALTER TABLE `Tools` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,7 +222,7 @@ CREATE TABLE `hacked_boxes` (
   `hacked` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ip_UNIQUE` (`ip`)
-) ENGINE=InnoDB AUTO_INCREMENT=2626 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3245 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,7 +231,7 @@ CREATE TABLE `hacked_boxes` (
 
 LOCK TABLES `hacked_boxes` WRITE;
 /*!40000 ALTER TABLE `hacked_boxes` DISABLE KEYS */;
-INSERT INTO `hacked_boxes` VALUES (2573,'1.1.1.19','dima',NULL,'1'),(2574,'1.1.2.212','dima',NULL,'1'),(2575,'1.1.1.114','dima',NULL,'1'),(2576,'1.1.2.55','dima',NULL,'1'),(2577,'1.1.2.43','dima',NULL,'1'),(2578,'1.1.3.11','dima',NULL,'1'),(2580,'1.1.2.144','dima',NULL,'1'),(2582,'1.1.1.119','dima',NULL,'1'),(2589,'1.1.2.244','dima',NULL,'1'),(2591,'1.1.1.143','dima',NULL,'1');
+INSERT INTO `hacked_boxes` VALUES (3244,'83.12.11.39','dima',NULL,'0');
 /*!40000 ALTER TABLE `hacked_boxes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -299,12 +300,15 @@ DROP TABLE IF EXISTS `inventory`;
 CREATE TABLE `inventory` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user` varchar(45) NOT NULL,
-  `software` varchar(45) NOT NULL,
+  `software` varchar(45) DEFAULT NULL,
   `installed` varchar(45) DEFAULT NULL,
-  `hardware` varchar(45) DEFAULT NULL,
-  `hardware_installed` varchar(45) DEFAULT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `item_size` int(11) DEFAULT NULL,
+  `version` varchar(45) DEFAULT NULL,
+  `file_name` varchar(45) DEFAULT NULL,
+  `time` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -313,8 +317,38 @@ CREATE TABLE `inventory` (
 
 LOCK TABLES `inventory` WRITE;
 /*!40000 ALTER TABLE `inventory` DISABLE KEYS */;
-INSERT INTO `inventory` VALUES (50,'dima','',NULL,'Hdd 1.1','false'),(51,'dima','',NULL,'hdd 1.2','false'),(52,'dima','',NULL,'hdd 1.3','false'),(53,'dima','ip_scanner 0.1','1',NULL,NULL),(54,'dima','brute_forcer 0.1','1',NULL,NULL);
+INSERT INTO `inventory` VALUES (53,'dima','ipScanner ','1',NULL,800,'',NULL,NULL),(54,'dima','bruteForcer','1',NULL,200,'1','','30'),(55,'dima','trojanHorse','','virus',150,'0.1',NULL,NULL),(56,'dima','antivirus','','antivirus',600,'0.3',NULL,NULL),(57,'dima','',NULL,'ip_list',NULL,NULL,'ip_list1',NULL),(60,'dima',NULL,NULL,'ip_list',NULL,NULL,'ip_list2',NULL);
 /*!40000 ALTER TABLE `inventory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ip_db`
+--
+
+DROP TABLE IF EXISTS `ip_db`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ip_db` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ip_addr` varchar(45) NOT NULL,
+  `player_name` varchar(45) NOT NULL,
+  `access` int(11) DEFAULT NULL,
+  `desc` varchar(45) DEFAULT NULL,
+  `game_value` varchar(45) DEFAULT NULL,
+  `connected` varchar(45) DEFAULT NULL,
+  `health` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ip_db`
+--
+
+LOCK TABLES `ip_db` WRITE;
+/*!40000 ALTER TABLE `ip_db` DISABLE KEYS */;
+INSERT INTO `ip_db` VALUES (1,'212.112.67.123','dima',0,'VPN','localhost','connection',' '),(2,'222.121.43.98','dima',NULL,'Bank',NULL,'',NULL),(3,'211.98.12.3','dima',1,'email','basic_email','',' '),(4,'211.98.12.3','l',0,'email','basic_email','',' '),(5,'192.168.1.1','l',1,'VPN','localhost','',NULL);
+/*!40000 ALTER TABLE `ip_db` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -332,7 +366,7 @@ CREATE TABLE `login` (
   `email` varchar(45) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -341,7 +375,7 @@ CREATE TABLE `login` (
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES (1,'lol','dima','0000-00-00 00:00:00','eitarbi',NULL);
+INSERT INTO `login` VALUES (1,'lol','dima','0000-00-00 00:00:00','eitarbi',NULL),(2,'l','l','0000-00-00 00:00:00',NULL,NULL);
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -375,6 +409,66 @@ INSERT INTO `mail` VALUES (1,'dima','parm','ise oled','0000-00-00','dima',NULL),
 UNLOCK TABLES;
 
 --
+-- Table structure for table `missions`
+--
+
+DROP TABLE IF EXISTS `missions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `missions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `player_name` varchar(45) DEFAULT NULL,
+  `desc` varchar(45) DEFAULT NULL,
+  `level` varchar(45) DEFAULT NULL,
+  `access` varchar(45) DEFAULT NULL,
+  `info` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `missions`
+--
+
+LOCK TABLES `missions` WRITE;
+/*!40000 ALTER TABLE `missions` DISABLE KEYS */;
+INSERT INTO `missions` VALUES (1,'dima','Mission 1','1','1','Go to IP database and create yourself new e-m'),(2,'dima','Mission 2','2',NULL,NULL),(3,'dima','Mission 3','3',NULL,NULL),(4,'dima','Mission 4','4',NULL,NULL),(5,'dima','Mission 5','5',NULL,NULL),(6,'dima','Mission 6','6',NULL,NULL),(7,'dima','Mission 7','7',NULL,NULL),(8,'dima','Mission 8','8',NULL,NULL),(9,'dima','Mission 9','9',NULL,NULL),(10,'dima','Mission 10','10',NULL,NULL);
+/*!40000 ALTER TABLE `missions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `npc_db`
+--
+
+DROP TABLE IF EXISTS `npc_db`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `npc_db` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `player_name` varchar(45) NOT NULL,
+  `ip_addr` varchar(45) NOT NULL,
+  `software` varchar(45) NOT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `item_size` varchar(45) DEFAULT NULL,
+  `net_speed` varchar(45) DEFAULT NULL,
+  `version` varchar(45) DEFAULT NULL,
+  `action` varchar(45) DEFAULT NULL,
+  `deleted` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=909 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `npc_db`
+--
+
+LOCK TABLES `npc_db` WRITE;
+/*!40000 ALTER TABLE `npc_db` DISABLE KEYS */;
+INSERT INTO `npc_db` VALUES (907,'dima','211.98.12.3','trojan','virus','400','64','0.2','',NULL),(908,'dima','211.98.12.3 ','antivirus','antivirus','600',NULL,'0.3','run',NULL);
+/*!40000 ALTER TABLE `npc_db` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_action`
 --
 
@@ -387,7 +481,7 @@ CREATE TABLE `user_action` (
   `time` varchar(45) DEFAULT NULL,
   `task` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=386 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=263 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -396,7 +490,7 @@ CREATE TABLE `user_action` (
 
 LOCK TABLES `user_action` WRITE;
 /*!40000 ALTER TABLE `user_action` DISABLE KEYS */;
-INSERT INTO `user_action` VALUES (384,'dima','201401123036','scanning'),(385,'dima','201401123022','start_bruting');
+INSERT INTO `user_action` VALUES (261,'dima','840','cracking'),(262,'dima','840','cracking');
 /*!40000 ALTER TABLE `user_action` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -414,7 +508,7 @@ CREATE TABLE `user_private` (
   `access` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ip_UNIQUE` (`ip`)
-) ENGINE=InnoDB AUTO_INCREMENT=1277 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1247 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -423,7 +517,7 @@ CREATE TABLE `user_private` (
 
 LOCK TABLES `user_private` WRITE;
 /*!40000 ALTER TABLE `user_private` DISABLE KEYS */;
-INSERT INTO `user_private` VALUES (897,'dima','1.1.1.19','1'),(898,'dima','1.1.1.114','1'),(899,'dima','1.1.1.119','1'),(900,'dima','1.1.1.143','1'),(901,'dima','1.1.2.43','1'),(902,'dima','1.1.2.55','1'),(903,'dima','1.1.2.144','1'),(904,'dima','1.1.2.212','1'),(905,'dima','1.1.2.244','1'),(906,'dima','1.1.3.11','1');
+INSERT INTO `user_private` VALUES (1237,'dima','1.1.1.19','1'),(1238,'dima','1.1.1.114','1'),(1239,'dima','1.1.1.119','1'),(1240,'dima','1.1.1.143','1'),(1241,'dima','1.1.2.43','1'),(1242,'dima','1.1.2.55','1'),(1243,'dima','1.1.2.144','1'),(1244,'dima','1.1.2.212','1'),(1245,'dima','1.1.2.244','1'),(1246,'dima','1.1.3.11','1');
 /*!40000 ALTER TABLE `user_private` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -461,4 +555,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-01-27 12:53:23
+-- Dump completed on 2014-02-05 10:55:00

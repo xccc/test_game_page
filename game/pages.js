@@ -1,22 +1,33 @@
 var db = require('./game.js');
+var scan = require('./user_action.js');
 exports.ip = function(req, res) {
+	var Game = new db.create(req.session.username);
+	var message = '';
+	var username = req.session.username;
+	Game.scan_nodes(); // check slave health status.
+	
+	
 	if(req.url == '/IP/JOIN') {
 			
-		db.update("UPDATE ip_db SET access='1' WHERE game_value='localhost' AND player_name='dima'"); // add user VPN to ip database
-		db.update("UPDATE ip_db SET access='1' WHERE game_value='basic_mail' AND player_name='dima'"); 
+		db.update("UPDATE ip_db SET access='1' WHERE game_value='localhost' AND player_name='" + username + "'"); // add user VPN to ip database
+		db.update("UPDATE ip_db SET access='1' WHERE game_value='basic_mail' AND player_name='" + username + "'"); 
 		res.redirect('/IP');
 		
 		
 		
 	}
 	
-	var Game = new db.create('dima');
-	var message = '';
-	Game.IP_db(function(data) {
-		if(data.length == 0) {
+	
+	
+	
+	
+	Game.IP_db(function(infected, cracked) {
+		if(infected.length == 0) {
 			message = 'gangsta'
 		}
-		res.render('ip.jade', {info: message, list: data});
+		console.log(cracked);
+		res.render('ip.jade', {info: message, list: infected, c_list: cracked, user: req.session.username});
+		scan.user_action(req.session.username);
 	})
 	
 	
